@@ -47,8 +47,11 @@ class BasicGithubObject(object):
         elif len(s) == 25:
             return datetime.datetime.strptime(s[:19], "%Y-%m-%dT%H:%M:%S") + (1 if s[19] == '-' else -1) * datetime.timedelta(hours=int(s[20:22]), minutes=int(s[23:25]))
         else:
-            return datetime.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ")
-
+            format = "%Y-%m-%dT%H:%M:%SZ"
+            try:
+                return datetime.datetime.strptime(s, format)
+            except TypeError:
+                return datetime(*(time.strptime(s, format)[0:6]))
 
 class GithubObject(BasicGithubObject):
     def __init__(self, requester, attributes, completed):
