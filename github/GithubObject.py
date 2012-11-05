@@ -12,7 +12,7 @@
 # You should have received a copy of the GNU Lesser General Public License along with PyGithub.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
-import dateutil
+from dateutil import parser
 
 import GithubException
 
@@ -44,7 +44,7 @@ class BasicGithubObject(object):
         if s is None:
             return None
         else:
-            return dateutil.parser.parse(s)
+            return parser.parse(s)
 
 class GithubObject(BasicGithubObject):
     def __init__(self, requester, attributes, completed):
