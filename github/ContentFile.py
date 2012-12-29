@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -11,10 +13,10 @@
 
 # You should have received a copy of the GNU Lesser General Public License along with PyGithub.  If not, see <http://www.gnu.org/licenses/>.
 
-import GithubObject
+import github.GithubObject
 
 
-class ContentFile(GithubObject.BasicGithubObject):
+class ContentFile(github.GithubObject.BasicGithubObject):
     @property
     def content(self):
         return self._NoneIfNotSet(self._content)
@@ -44,13 +46,13 @@ class ContentFile(GithubObject.BasicGithubObject):
         return self._NoneIfNotSet(self._type)
 
     def _initAttributes(self):
-        self._content = GithubObject.NotSet
-        self._encoding = GithubObject.NotSet
-        self._name = GithubObject.NotSet
-        self._path = GithubObject.NotSet
-        self._sha = GithubObject.NotSet
-        self._size = GithubObject.NotSet
-        self._type = GithubObject.NotSet
+        self._content = github.GithubObject.NotSet
+        self._encoding = github.GithubObject.NotSet
+        self._name = github.GithubObject.NotSet
+        self._path = github.GithubObject.NotSet
+        self._sha = github.GithubObject.NotSet
+        self._size = github.GithubObject.NotSet
+        self._type = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "content" in attributes:  # pragma no branch
@@ -69,7 +71,7 @@ class ContentFile(GithubObject.BasicGithubObject):
             assert attributes["sha"] is None or isinstance(attributes["sha"], (str, unicode)), attributes["sha"]
             self._sha = attributes["sha"]
         if "size" in attributes:  # pragma no branch
-            assert attributes["size"] is None or isinstance(attributes["size"], int), attributes["size"]
+            assert attributes["size"] is None or isinstance(attributes["size"], (int, long)), attributes["size"]
             self._size = attributes["size"]
         if "type" in attributes:  # pragma no branch
             assert attributes["type"] is None or isinstance(attributes["type"], (str, unicode)), attributes["type"]

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -11,10 +13,10 @@
 
 # You should have received a copy of the GNU Lesser General Public License along with PyGithub.  If not, see <http://www.gnu.org/licenses/>.
 
-import GithubObject
+import github.GithubObject
 
 
-class GistFile(GithubObject.BasicGithubObject):
+class GistFile(github.GithubObject.BasicGithubObject):
     @property
     def content(self):
         return self._NoneIfNotSet(self._content)
@@ -36,11 +38,11 @@ class GistFile(GithubObject.BasicGithubObject):
         return self._NoneIfNotSet(self._size)
 
     def _initAttributes(self):
-        self._content = GithubObject.NotSet
-        self._filename = GithubObject.NotSet
-        self._language = GithubObject.NotSet
-        self._raw_url = GithubObject.NotSet
-        self._size = GithubObject.NotSet
+        self._content = github.GithubObject.NotSet
+        self._filename = github.GithubObject.NotSet
+        self._language = github.GithubObject.NotSet
+        self._raw_url = github.GithubObject.NotSet
+        self._size = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "content" in attributes:  # pragma no branch
@@ -56,5 +58,5 @@ class GistFile(GithubObject.BasicGithubObject):
             assert attributes["raw_url"] is None or isinstance(attributes["raw_url"], (str, unicode)), attributes["raw_url"]
             self._raw_url = attributes["raw_url"]
         if "size" in attributes:  # pragma no branch
-            assert attributes["size"] is None or isinstance(attributes["size"], int), attributes["size"]
+            assert attributes["size"] is None or isinstance(attributes["size"], (int, long)), attributes["size"]
             self._size = attributes["size"]

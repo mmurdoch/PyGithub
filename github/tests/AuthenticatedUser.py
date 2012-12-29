@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -120,12 +122,21 @@ class AuthenticatedUser(Framework.TestCase):
         repo = self.user.create_repo("TestPyGithub", "Repo created by PyGithub", "http://foobar.com", private=False, has_issues=False, has_wiki=False, has_downloads=False)
         self.assertEqual(repo.url, "https://api.github.com/repos/jacquev6/TestPyGithub")
 
+    def testCreateRepositoryWithAutoInit(self):
+        repo = self.user.create_repo("TestPyGithub", auto_init=True, gitignore_template="Python")
+        self.assertEqual(repo.url, "https://api.github.com/repos/jacquev6/TestPyGithub")
+
     def testCreateAuthorizationWithoutArguments(self):
         authorization = self.user.create_authorization()
         self.assertEqual(authorization.id, 372259)
 
     def testCreateAuthorizationWithAllArguments(self):
         authorization = self.user.create_authorization(["repo"], "Note created by PyGithub", "http://vincent-jacques.net/PyGithub")
+        self.assertEqual(authorization.id, 372294)
+
+    def testCreateAuthorizationWithClientIdAndSecret(self):
+        # I don't have a client_id and client_secret so the ReplayData for this test is forged
+        authorization = self.user.create_authorization(client_id="01234567890123456789", client_secret="0123456789012345678901234567890123456789")
         self.assertEqual(authorization.id, 372294)
 
     def testCreateGist(self):

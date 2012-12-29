@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -11,10 +13,10 @@
 
 # You should have received a copy of the GNU Lesser General Public License along with PyGithub.  If not, see <http://www.gnu.org/licenses/>.
 
-import GithubObject
+import github.GithubObject
 
 
-class Download(GithubObject.GithubObject):
+class Download(github.GithubObject.GithubObject):
     @property
     def accesskeyid(self):
         self._completeIfNotSet(self._accesskeyid)
@@ -124,26 +126,26 @@ class Download(GithubObject.GithubObject):
         )
 
     def _initAttributes(self):
-        self._accesskeyid = GithubObject.NotSet
-        self._acl = GithubObject.NotSet
-        self._bucket = GithubObject.NotSet
-        self._content_type = GithubObject.NotSet
-        self._created_at = GithubObject.NotSet
-        self._description = GithubObject.NotSet
-        self._download_count = GithubObject.NotSet
-        self._expirationdate = GithubObject.NotSet
-        self._html_url = GithubObject.NotSet
-        self._id = GithubObject.NotSet
-        self._mime_type = GithubObject.NotSet
-        self._name = GithubObject.NotSet
-        self._path = GithubObject.NotSet
-        self._policy = GithubObject.NotSet
-        self._prefix = GithubObject.NotSet
-        self._redirect = GithubObject.NotSet
-        self._s3_url = GithubObject.NotSet
-        self._signature = GithubObject.NotSet
-        self._size = GithubObject.NotSet
-        self._url = GithubObject.NotSet
+        self._accesskeyid = github.GithubObject.NotSet
+        self._acl = github.GithubObject.NotSet
+        self._bucket = github.GithubObject.NotSet
+        self._content_type = github.GithubObject.NotSet
+        self._created_at = github.GithubObject.NotSet
+        self._description = github.GithubObject.NotSet
+        self._download_count = github.GithubObject.NotSet
+        self._expirationdate = github.GithubObject.NotSet
+        self._html_url = github.GithubObject.NotSet
+        self._id = github.GithubObject.NotSet
+        self._mime_type = github.GithubObject.NotSet
+        self._name = github.GithubObject.NotSet
+        self._path = github.GithubObject.NotSet
+        self._policy = github.GithubObject.NotSet
+        self._prefix = github.GithubObject.NotSet
+        self._redirect = github.GithubObject.NotSet
+        self._s3_url = github.GithubObject.NotSet
+        self._signature = github.GithubObject.NotSet
+        self._size = github.GithubObject.NotSet
+        self._url = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "accesskeyid" in attributes:  # pragma no branch
@@ -165,7 +167,7 @@ class Download(GithubObject.GithubObject):
             assert attributes["description"] is None or isinstance(attributes["description"], (str, unicode)), attributes["description"]
             self._description = attributes["description"]
         if "download_count" in attributes:  # pragma no branch
-            assert attributes["download_count"] is None or isinstance(attributes["download_count"], int), attributes["download_count"]
+            assert attributes["download_count"] is None or isinstance(attributes["download_count"], (int, long)), attributes["download_count"]
             self._download_count = attributes["download_count"]
         if "expirationdate" in attributes:  # pragma no branch
             assert attributes["expirationdate"] is None or isinstance(attributes["expirationdate"], (str, unicode)), attributes["expirationdate"]
@@ -174,7 +176,7 @@ class Download(GithubObject.GithubObject):
             assert attributes["html_url"] is None or isinstance(attributes["html_url"], (str, unicode)), attributes["html_url"]
             self._html_url = attributes["html_url"]
         if "id" in attributes:  # pragma no branch
-            assert attributes["id"] is None or isinstance(attributes["id"], int), attributes["id"]
+            assert attributes["id"] is None or isinstance(attributes["id"], (int, long)), attributes["id"]
             self._id = attributes["id"]
         if "mime_type" in attributes:  # pragma no branch
             assert attributes["mime_type"] is None or isinstance(attributes["mime_type"], (str, unicode)), attributes["mime_type"]
@@ -201,7 +203,7 @@ class Download(GithubObject.GithubObject):
             assert attributes["signature"] is None or isinstance(attributes["signature"], (str, unicode)), attributes["signature"]
             self._signature = attributes["signature"]
         if "size" in attributes:  # pragma no branch
-            assert attributes["size"] is None or isinstance(attributes["size"], int), attributes["size"]
+            assert attributes["size"] is None or isinstance(attributes["size"], (int, long)), attributes["size"]
             self._size = attributes["size"]
         if "url" in attributes:  # pragma no branch
             assert attributes["url"] is None or isinstance(attributes["url"], (str, unicode)), attributes["url"]

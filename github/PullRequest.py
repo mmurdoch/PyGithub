@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -11,23 +13,28 @@
 
 # You should have received a copy of the GNU Lesser General Public License along with PyGithub.  If not, see <http://www.gnu.org/licenses/>.
 
-import GithubObject
-import PaginatedList
+import github.GithubObject
+import github.PaginatedList
 
-import PullRequestMergeStatus
-import NamedUser
-import PullRequestPart
-import PullRequestComment
-import File
-import IssueComment
-import Commit
+import github.PullRequestMergeStatus
+import github.NamedUser
+import github.PullRequestPart
+import github.PullRequestComment
+import github.File
+import github.IssueComment
+import github.Commit
 
 
-class PullRequest(GithubObject.GithubObject):
+class PullRequest(github.GithubObject.GithubObject):
     @property
     def additions(self):
         self._completeIfNotSet(self._additions)
         return self._NoneIfNotSet(self._additions)
+
+    @property
+    def assignee(self):
+        self._completeIfNotSet(self._assignee)
+        return self._NoneIfNotSet(self._assignee)
 
     @property
     def base(self):
@@ -159,9 +166,9 @@ class PullRequest(GithubObject.GithubObject):
 
     def create_review_comment(self, body, commit_id, path, position):
         assert isinstance(body, (str, unicode)), body
-        assert isinstance(commit_id, Commit.Commit), commit_id
+        assert isinstance(commit_id, github.Commit.Commit), commit_id
         assert isinstance(path, (str, unicode)), path
-        assert isinstance(position, int), position
+        assert isinstance(position, (int, long)), position
         post_parameters = {
             "body": body,
             "commit_id": commit_id._identity,
@@ -174,7 +181,7 @@ class PullRequest(GithubObject.GithubObject):
             None,
             post_parameters
         )
-        return PullRequestComment.PullRequestComment(self._requester, data, completed=True)
+        return github.PullRequestComment.PullRequestComment(self._requester, data, completed=True)
 
     def create_issue_comment(self, body):
         assert isinstance(body, (str, unicode)), body
@@ -187,18 +194,18 @@ class PullRequest(GithubObject.GithubObject):
             None,
             post_parameters
         )
-        return IssueComment.IssueComment(self._requester, data, completed=True)
+        return github.IssueComment.IssueComment(self._requester, data, completed=True)
 
-    def edit(self, title=GithubObject.NotSet, body=GithubObject.NotSet, state=GithubObject.NotSet):
-        assert title is GithubObject.NotSet or isinstance(title, (str, unicode)), title
-        assert body is GithubObject.NotSet or isinstance(body, (str, unicode)), body
-        assert state is GithubObject.NotSet or isinstance(state, (str, unicode)), state
+    def edit(self, title=github.GithubObject.NotSet, body=github.GithubObject.NotSet, state=github.GithubObject.NotSet):
+        assert title is github.GithubObject.NotSet or isinstance(title, (str, unicode)), title
+        assert body is github.GithubObject.NotSet or isinstance(body, (str, unicode)), body
+        assert state is github.GithubObject.NotSet or isinstance(state, (str, unicode)), state
         post_parameters = dict()
-        if title is not GithubObject.NotSet:
+        if title is not github.GithubObject.NotSet:
             post_parameters["title"] = title
-        if body is not GithubObject.NotSet:
+        if body is not github.GithubObject.NotSet:
             post_parameters["body"] = body
-        if state is not GithubObject.NotSet:
+        if state is not github.GithubObject.NotSet:
             post_parameters["state"] = state
         headers, data = self._requester.requestAndCheck(
             "PATCH",
@@ -212,55 +219,55 @@ class PullRequest(GithubObject.GithubObject):
         return self.get_review_comment(id)
 
     def get_review_comment(self, id):
-        assert isinstance(id, int), id
+        assert isinstance(id, (int, long)), id
         headers, data = self._requester.requestAndCheck(
             "GET",
             self._parentUrl(self.url) + "/comments/" + str(id),
             None,
             None
         )
-        return PullRequestComment.PullRequestComment(self._requester, data, completed=True)
+        return github.PullRequestComment.PullRequestComment(self._requester, data, completed=True)
 
     def get_comments(self):
         return self.get_review_comments()
 
     def get_review_comments(self):
-        return PaginatedList.PaginatedList(
-            PullRequestComment.PullRequestComment,
+        return github.PaginatedList.PaginatedList(
+            github.PullRequestComment.PullRequestComment,
             self._requester,
             self.url + "/comments",
             None
         )
 
     def get_commits(self):
-        return PaginatedList.PaginatedList(
-            Commit.Commit,
+        return github.PaginatedList.PaginatedList(
+            github.Commit.Commit,
             self._requester,
             self.url + "/commits",
             None
         )
 
     def get_files(self):
-        return PaginatedList.PaginatedList(
-            File.File,
+        return github.PaginatedList.PaginatedList(
+            github.File.File,
             self._requester,
             self.url + "/files",
             None
         )
 
     def get_issue_comment(self, id):
-        assert isinstance(id, int), id
+        assert isinstance(id, (int, long)), id
         headers, data = self._requester.requestAndCheck(
             "GET",
             self._parentUrl(self._parentUrl(self.url)) + "/issues/comments/" + str(id),
             None,
             None
         )
-        return IssueComment.IssueComment(self._requester, data, completed=True)
+        return github.IssueComment.IssueComment(self._requester, data, completed=True)
 
     def get_issue_comments(self):
-        return PaginatedList.PaginatedList(
-            IssueComment.IssueComment,
+        return github.PaginatedList.PaginatedList(
+            github.IssueComment.IssueComment,
             self._requester,
             self._parentUrl(self._parentUrl(self.url)) + "/issues/" + str(self.number) + "/comments",
             None
@@ -275,10 +282,10 @@ class PullRequest(GithubObject.GithubObject):
         )
         return status == 204
 
-    def merge(self, commit_message=GithubObject.NotSet):
-        assert commit_message is GithubObject.NotSet or isinstance(commit_message, (str, unicode)), commit_message
+    def merge(self, commit_message=github.GithubObject.NotSet):
+        assert commit_message is github.GithubObject.NotSet or isinstance(commit_message, (str, unicode)), commit_message
         post_parameters = dict()
-        if commit_message is not GithubObject.NotSet:
+        if commit_message is not github.GithubObject.NotSet:
             post_parameters["commit_message"] = commit_message
         headers, data = self._requester.requestAndCheck(
             "PUT",
@@ -286,75 +293,79 @@ class PullRequest(GithubObject.GithubObject):
             None,
             post_parameters
         )
-        return PullRequestMergeStatus.PullRequestMergeStatus(self._requester, data, completed=True)
+        return github.PullRequestMergeStatus.PullRequestMergeStatus(self._requester, data, completed=True)
 
     def _initAttributes(self):
-        self._additions = GithubObject.NotSet
-        self._base = GithubObject.NotSet
-        self._body = GithubObject.NotSet
-        self._changed_files = GithubObject.NotSet
-        self._closed_at = GithubObject.NotSet
-        self._comments = GithubObject.NotSet
-        self._commits = GithubObject.NotSet
-        self._created_at = GithubObject.NotSet
-        self._deletions = GithubObject.NotSet
-        self._diff_url = GithubObject.NotSet
-        self._head = GithubObject.NotSet
-        self._html_url = GithubObject.NotSet
-        self._id = GithubObject.NotSet
-        self._issue_url = GithubObject.NotSet
-        self._mergeable = GithubObject.NotSet
-        self._merged = GithubObject.NotSet
-        self._merged_at = GithubObject.NotSet
-        self._merged_by = GithubObject.NotSet
-        self._number = GithubObject.NotSet
-        self._patch_url = GithubObject.NotSet
-        self._review_comments = GithubObject.NotSet
-        self._state = GithubObject.NotSet
-        self._title = GithubObject.NotSet
-        self._updated_at = GithubObject.NotSet
-        self._url = GithubObject.NotSet
-        self._user = GithubObject.NotSet
+        self._additions = github.GithubObject.NotSet
+        self._assignee = github.GithubObject.NotSet
+        self._base = github.GithubObject.NotSet
+        self._body = github.GithubObject.NotSet
+        self._changed_files = github.GithubObject.NotSet
+        self._closed_at = github.GithubObject.NotSet
+        self._comments = github.GithubObject.NotSet
+        self._commits = github.GithubObject.NotSet
+        self._created_at = github.GithubObject.NotSet
+        self._deletions = github.GithubObject.NotSet
+        self._diff_url = github.GithubObject.NotSet
+        self._head = github.GithubObject.NotSet
+        self._html_url = github.GithubObject.NotSet
+        self._id = github.GithubObject.NotSet
+        self._issue_url = github.GithubObject.NotSet
+        self._mergeable = github.GithubObject.NotSet
+        self._merged = github.GithubObject.NotSet
+        self._merged_at = github.GithubObject.NotSet
+        self._merged_by = github.GithubObject.NotSet
+        self._number = github.GithubObject.NotSet
+        self._patch_url = github.GithubObject.NotSet
+        self._review_comments = github.GithubObject.NotSet
+        self._state = github.GithubObject.NotSet
+        self._title = github.GithubObject.NotSet
+        self._updated_at = github.GithubObject.NotSet
+        self._url = github.GithubObject.NotSet
+        self._user = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "additions" in attributes:  # pragma no branch
-            assert attributes["additions"] is None or isinstance(attributes["additions"], int), attributes["additions"]
+            assert attributes["additions"] is None or isinstance(attributes["additions"], (int, long)), attributes["additions"]
             self._additions = attributes["additions"]
+        if "assignee" in attributes:  # pragma no branch
+            assert attributes["assignee"] is None or isinstance(attributes["assignee"], dict), attributes["assignee"]
+            self._assignee = None if attributes["assignee"] is None else github.NamedUser.NamedUser(self._requester, attributes["assignee"], completed=False)
         if "base" in attributes:  # pragma no branch
             assert attributes["base"] is None or isinstance(attributes["base"], dict), attributes["base"]
-            self._base = None if attributes["base"] is None else PullRequestPart.PullRequestPart(self._requester, attributes["base"], completed=False)
+            self._base = None if attributes["base"] is None else github.PullRequestPart.PullRequestPart(self._requester, attributes["base"], completed=False)
         if "body" in attributes:  # pragma no branch
             assert attributes["body"] is None or isinstance(attributes["body"], (str, unicode)), attributes["body"]
             self._body = attributes["body"]
         if "changed_files" in attributes:  # pragma no branch
-            assert attributes["changed_files"] is None or isinstance(attributes["changed_files"], int), attributes["changed_files"]
+            assert attributes["changed_files"] is None or isinstance(attributes["changed_files"], (int, long)), attributes["changed_files"]
             self._changed_files = attributes["changed_files"]
         if "closed_at" in attributes:  # pragma no branch
             assert attributes["closed_at"] is None or isinstance(attributes["closed_at"], (str, unicode)), attributes["closed_at"]
             self._closed_at = self._parseDatetime(attributes["closed_at"])
         if "comments" in attributes:  # pragma no branch
-            assert attributes["comments"] is None or isinstance(attributes["comments"], int), attributes["comments"]
+            assert attributes["comments"] is None or isinstance(attributes["comments"], (int, long)), attributes["comments"]
             self._comments = attributes["comments"]
         if "commits" in attributes:  # pragma no branch
-            assert attributes["commits"] is None or isinstance(attributes["commits"], int), attributes["commits"]
+            assert attributes["commits"] is None or isinstance(attributes["commits"], (int, long)), attributes["commits"]
             self._commits = attributes["commits"]
         if "created_at" in attributes:  # pragma no branch
             assert attributes["created_at"] is None or isinstance(attributes["created_at"], (str, unicode)), attributes["created_at"]
             self._created_at = self._parseDatetime(attributes["created_at"])
         if "deletions" in attributes:  # pragma no branch
-            assert attributes["deletions"] is None or isinstance(attributes["deletions"], int), attributes["deletions"]
+            assert attributes["deletions"] is None or isinstance(attributes["deletions"], (int, long)), attributes["deletions"]
             self._deletions = attributes["deletions"]
         if "diff_url" in attributes:  # pragma no branch
             assert attributes["diff_url"] is None or isinstance(attributes["diff_url"], (str, unicode)), attributes["diff_url"]
             self._diff_url = attributes["diff_url"]
         if "head" in attributes:  # pragma no branch
             assert attributes["head"] is None or isinstance(attributes["head"], dict), attributes["head"]
-            self._head = None if attributes["head"] is None else PullRequestPart.PullRequestPart(self._requester, attributes["head"], completed=False)
+            self._head = None if attributes["head"] is None else github.PullRequestPart.PullRequestPart(self._requester, attributes["head"], completed=False)
         if "html_url" in attributes:  # pragma no branch
             assert attributes["html_url"] is None or isinstance(attributes["html_url"], (str, unicode)), attributes["html_url"]
             self._html_url = attributes["html_url"]
         if "id" in attributes:  # pragma no branch
-            assert attributes["id"] is None or isinstance(attributes["id"], int), attributes["id"]
+            assert attributes["id"] is None or isinstance(attributes["id"], (int, long)), attributes["id"]
             self._id = attributes["id"]
         if "issue_url" in attributes:  # pragma no branch
             assert attributes["issue_url"] is None or isinstance(attributes["issue_url"], (str, unicode)), attributes["issue_url"]
@@ -370,15 +381,15 @@ class PullRequest(GithubObject.GithubObject):
             self._merged_at = self._parseDatetime(attributes["merged_at"])
         if "merged_by" in attributes:  # pragma no branch
             assert attributes["merged_by"] is None or isinstance(attributes["merged_by"], dict), attributes["merged_by"]
-            self._merged_by = None if attributes["merged_by"] is None else NamedUser.NamedUser(self._requester, attributes["merged_by"], completed=False)
+            self._merged_by = None if attributes["merged_by"] is None else github.NamedUser.NamedUser(self._requester, attributes["merged_by"], completed=False)
         if "number" in attributes:  # pragma no branch
-            assert attributes["number"] is None or isinstance(attributes["number"], int), attributes["number"]
+            assert attributes["number"] is None or isinstance(attributes["number"], (int, long)), attributes["number"]
             self._number = attributes["number"]
         if "patch_url" in attributes:  # pragma no branch
             assert attributes["patch_url"] is None or isinstance(attributes["patch_url"], (str, unicode)), attributes["patch_url"]
             self._patch_url = attributes["patch_url"]
         if "review_comments" in attributes:  # pragma no branch
-            assert attributes["review_comments"] is None or isinstance(attributes["review_comments"], int), attributes["review_comments"]
+            assert attributes["review_comments"] is None or isinstance(attributes["review_comments"], (int, long)), attributes["review_comments"]
             self._review_comments = attributes["review_comments"]
         if "state" in attributes:  # pragma no branch
             assert attributes["state"] is None or isinstance(attributes["state"], (str, unicode)), attributes["state"]
@@ -394,4 +405,4 @@ class PullRequest(GithubObject.GithubObject):
             self._url = attributes["url"]
         if "user" in attributes:  # pragma no branch
             assert attributes["user"] is None or isinstance(attributes["user"], dict), attributes["user"]
-            self._user = None if attributes["user"] is None else NamedUser.NamedUser(self._requester, attributes["user"], completed=False)
+            self._user = None if attributes["user"] is None else github.NamedUser.NamedUser(self._requester, attributes["user"], completed=False)

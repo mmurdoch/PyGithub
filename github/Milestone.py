@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -13,14 +15,14 @@
 
 import datetime
 
-import GithubObject
-import PaginatedList
+import github.GithubObject
+import github.PaginatedList
 
-import NamedUser
-import Label
+import github.NamedUser
+import github.Label
 
 
-class Milestone(GithubObject.GithubObject):
+class Milestone(github.GithubObject.GithubObject):
     @property
     def closed_issues(self):
         self._completeIfNotSet(self._closed_issues)
@@ -84,19 +86,19 @@ class Milestone(GithubObject.GithubObject):
             None
         )
 
-    def edit(self, title, state=GithubObject.NotSet, description=GithubObject.NotSet, due_on=GithubObject.NotSet):
+    def edit(self, title, state=github.GithubObject.NotSet, description=github.GithubObject.NotSet, due_on=github.GithubObject.NotSet):
         assert isinstance(title, (str, unicode)), title
-        assert state is GithubObject.NotSet or isinstance(state, (str, unicode)), state
-        assert description is GithubObject.NotSet or isinstance(description, (str, unicode)), description
-        assert due_on is GithubObject.NotSet or isinstance(due_on, datetime.date), due_on
+        assert state is github.GithubObject.NotSet or isinstance(state, (str, unicode)), state
+        assert description is github.GithubObject.NotSet or isinstance(description, (str, unicode)), description
+        assert due_on is github.GithubObject.NotSet or isinstance(due_on, datetime.date), due_on
         post_parameters = {
             "title": title,
         }
-        if state is not GithubObject.NotSet:
+        if state is not github.GithubObject.NotSet:
             post_parameters["state"] = state
-        if description is not GithubObject.NotSet:
+        if description is not github.GithubObject.NotSet:
             post_parameters["description"] = description
-        if due_on is not GithubObject.NotSet:
+        if due_on is not github.GithubObject.NotSet:
             post_parameters["due_on"] = due_on.strftime("%Y-%m-%d")
         headers, data = self._requester.requestAndCheck(
             "PATCH",
@@ -107,8 +109,8 @@ class Milestone(GithubObject.GithubObject):
         self._useAttributes(data)
 
     def get_labels(self):
-        return PaginatedList.PaginatedList(
-            Label.Label,
+        return github.PaginatedList.PaginatedList(
+            github.Label.Label,
             self._requester,
             self.url + "/labels",
             None
@@ -119,28 +121,28 @@ class Milestone(GithubObject.GithubObject):
         return self.number
 
     def _initAttributes(self):
-        self._closed_issues = GithubObject.NotSet
-        self._created_at = GithubObject.NotSet
-        self._creator = GithubObject.NotSet
-        self._description = GithubObject.NotSet
-        self._due_on = GithubObject.NotSet
-        self._id = GithubObject.NotSet
-        self._number = GithubObject.NotSet
-        self._open_issues = GithubObject.NotSet
-        self._state = GithubObject.NotSet
-        self._title = GithubObject.NotSet
-        self._url = GithubObject.NotSet
+        self._closed_issues = github.GithubObject.NotSet
+        self._created_at = github.GithubObject.NotSet
+        self._creator = github.GithubObject.NotSet
+        self._description = github.GithubObject.NotSet
+        self._due_on = github.GithubObject.NotSet
+        self._id = github.GithubObject.NotSet
+        self._number = github.GithubObject.NotSet
+        self._open_issues = github.GithubObject.NotSet
+        self._state = github.GithubObject.NotSet
+        self._title = github.GithubObject.NotSet
+        self._url = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "closed_issues" in attributes:  # pragma no branch
-            assert attributes["closed_issues"] is None or isinstance(attributes["closed_issues"], int), attributes["closed_issues"]
+            assert attributes["closed_issues"] is None or isinstance(attributes["closed_issues"], (int, long)), attributes["closed_issues"]
             self._closed_issues = attributes["closed_issues"]
         if "created_at" in attributes:  # pragma no branch
             assert attributes["created_at"] is None or isinstance(attributes["created_at"], (str, unicode)), attributes["created_at"]
             self._created_at = self._parseDatetime(attributes["created_at"])
         if "creator" in attributes:  # pragma no branch
             assert attributes["creator"] is None or isinstance(attributes["creator"], dict), attributes["creator"]
-            self._creator = None if attributes["creator"] is None else NamedUser.NamedUser(self._requester, attributes["creator"], completed=False)
+            self._creator = None if attributes["creator"] is None else github.NamedUser.NamedUser(self._requester, attributes["creator"], completed=False)
         if "description" in attributes:  # pragma no branch
             assert attributes["description"] is None or isinstance(attributes["description"], (str, unicode)), attributes["description"]
             self._description = attributes["description"]
@@ -148,13 +150,13 @@ class Milestone(GithubObject.GithubObject):
             assert attributes["due_on"] is None or isinstance(attributes["due_on"], (str, unicode)), attributes["due_on"]
             self._due_on = self._parseDatetime(attributes["due_on"])
         if "id" in attributes:  # pragma no branch
-            assert attributes["id"] is None or isinstance(attributes["id"], int), attributes["id"]
+            assert attributes["id"] is None or isinstance(attributes["id"], (int, long)), attributes["id"]
             self._id = attributes["id"]
         if "number" in attributes:  # pragma no branch
-            assert attributes["number"] is None or isinstance(attributes["number"], int), attributes["number"]
+            assert attributes["number"] is None or isinstance(attributes["number"], (int, long)), attributes["number"]
             self._number = attributes["number"]
         if "open_issues" in attributes:  # pragma no branch
-            assert attributes["open_issues"] is None or isinstance(attributes["open_issues"], int), attributes["open_issues"]
+            assert attributes["open_issues"] is None or isinstance(attributes["open_issues"], (int, long)), attributes["open_issues"]
             self._open_issues = attributes["open_issues"]
         if "state" in attributes:  # pragma no branch
             assert attributes["state"] is None or isinstance(attributes["state"], (str, unicode)), attributes["state"]

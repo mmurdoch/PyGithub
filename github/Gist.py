@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -11,18 +13,16 @@
 
 # You should have received a copy of the GNU Lesser General Public License along with PyGithub.  If not, see <http://www.gnu.org/licenses/>.
 
-import GithubObject
-import PaginatedList
+import github.GithubObject
+import github.PaginatedList
 
-import Gist
-import GistComment
-import NamedUser
-import GistFile
-import InputFileContent
-import GistHistoryState
+import github.GistComment
+import github.NamedUser
+import github.GistFile
+import github.GistHistoryState
 
 
-class Gist(GithubObject.GithubObject):
+class Gist(github.GithubObject.GithubObject):
     @property
     def comments(self):
         self._completeIfNotSet(self._comments)
@@ -109,7 +109,7 @@ class Gist(GithubObject.GithubObject):
             None,
             post_parameters
         )
-        return GistComment.GistComment(self._requester, data, completed=True)
+        return github.GistComment.GistComment(self._requester, data, completed=True)
 
     def create_fork(self):
         headers, data = self._requester.requestAndCheck(
@@ -128,13 +128,13 @@ class Gist(GithubObject.GithubObject):
             None
         )
 
-    def edit(self, description=GithubObject.NotSet, files=GithubObject.NotSet):
-        assert description is GithubObject.NotSet or isinstance(description, (str, unicode)), description
-        assert files is GithubObject.NotSet or all(isinstance(element, InputFileContent.InputFileContent) for element in files.itervalues()), files
+    def edit(self, description=github.GithubObject.NotSet, files=github.GithubObject.NotSet):
+        assert description is github.GithubObject.NotSet or isinstance(description, (str, unicode)), description
+        assert files is github.GithubObject.NotSet or all(isinstance(element, github.InputFileContent) for element in files.itervalues()), files
         post_parameters = dict()
-        if description is not GithubObject.NotSet:
+        if description is not github.GithubObject.NotSet:
             post_parameters["description"] = description
-        if files is not GithubObject.NotSet:
+        if files is not github.GithubObject.NotSet:
             post_parameters["files"] = dict((key, value._identity) for key, value in files.iteritems())
         headers, data = self._requester.requestAndCheck(
             "PATCH",
@@ -145,18 +145,18 @@ class Gist(GithubObject.GithubObject):
         self._useAttributes(data)
 
     def get_comment(self, id):
-        assert isinstance(id, int), id
+        assert isinstance(id, (int, long)), id
         headers, data = self._requester.requestAndCheck(
             "GET",
-            "/gists/comments/" + str(id),
+            self.url + "/comments/" + str(id),
             None,
             None
         )
-        return GistComment.GistComment(self._requester, data, completed=True)
+        return github.GistComment.GistComment(self._requester, data, completed=True)
 
     def get_comments(self):
-        return PaginatedList.PaginatedList(
-            GistComment.GistComment,
+        return github.PaginatedList.PaginatedList(
+            github.GistComment.GistComment,
             self._requester,
             self.url + "/comments",
             None
@@ -188,25 +188,25 @@ class Gist(GithubObject.GithubObject):
         )
 
     def _initAttributes(self):
-        self._comments = GithubObject.NotSet
-        self._created_at = GithubObject.NotSet
-        self._description = GithubObject.NotSet
-        self._files = GithubObject.NotSet
-        self._fork_of = GithubObject.NotSet
-        self._forks = GithubObject.NotSet
-        self._git_pull_url = GithubObject.NotSet
-        self._git_push_url = GithubObject.NotSet
-        self._history = GithubObject.NotSet
-        self._html_url = GithubObject.NotSet
-        self._id = GithubObject.NotSet
-        self._public = GithubObject.NotSet
-        self._updated_at = GithubObject.NotSet
-        self._url = GithubObject.NotSet
-        self._user = GithubObject.NotSet
+        self._comments = github.GithubObject.NotSet
+        self._created_at = github.GithubObject.NotSet
+        self._description = github.GithubObject.NotSet
+        self._files = github.GithubObject.NotSet
+        self._fork_of = github.GithubObject.NotSet
+        self._forks = github.GithubObject.NotSet
+        self._git_pull_url = github.GithubObject.NotSet
+        self._git_push_url = github.GithubObject.NotSet
+        self._history = github.GithubObject.NotSet
+        self._html_url = github.GithubObject.NotSet
+        self._id = github.GithubObject.NotSet
+        self._public = github.GithubObject.NotSet
+        self._updated_at = github.GithubObject.NotSet
+        self._url = github.GithubObject.NotSet
+        self._user = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "comments" in attributes:  # pragma no branch
-            assert attributes["comments"] is None or isinstance(attributes["comments"], int), attributes["comments"]
+            assert attributes["comments"] is None or isinstance(attributes["comments"], (int, long)), attributes["comments"]
             self._comments = attributes["comments"]
         if "created_at" in attributes:  # pragma no branch
             assert attributes["created_at"] is None or isinstance(attributes["created_at"], (str, unicode)), attributes["created_at"]
@@ -217,7 +217,7 @@ class Gist(GithubObject.GithubObject):
         if "files" in attributes:  # pragma no branch
             assert attributes["files"] is None or all(isinstance(element, dict) for element in attributes["files"].itervalues()), attributes["files"]
             self._files = None if attributes["files"] is None else dict(
-                (key, GistFile.GistFile(self._requester, element, completed=False))
+                (key, github.GistFile.GistFile(self._requester, element, completed=False))
                 for key, element in attributes["files"].iteritems()
             )
         if "fork_of" in attributes:  # pragma no branch
@@ -238,7 +238,7 @@ class Gist(GithubObject.GithubObject):
         if "history" in attributes:  # pragma no branch
             assert attributes["history"] is None or all(isinstance(element, dict) for element in attributes["history"]), attributes["history"]
             self._history = None if attributes["history"] is None else [
-                GistHistoryState.GistHistoryState(self._requester, element, completed=False)
+                github.GistHistoryState.GistHistoryState(self._requester, element, completed=False)
                 for element in attributes["history"]
             ]
         if "html_url" in attributes:  # pragma no branch
@@ -258,4 +258,4 @@ class Gist(GithubObject.GithubObject):
             self._url = attributes["url"]
         if "user" in attributes:  # pragma no branch
             assert attributes["user"] is None or isinstance(attributes["user"], dict), attributes["user"]
-            self._user = None if attributes["user"] is None else NamedUser.NamedUser(self._requester, attributes["user"], completed=False)
+            self._user = None if attributes["user"] is None else github.NamedUser.NamedUser(self._requester, attributes["user"], completed=False)

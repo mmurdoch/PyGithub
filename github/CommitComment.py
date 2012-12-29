@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -11,12 +13,12 @@
 
 # You should have received a copy of the GNU Lesser General Public License along with PyGithub.  If not, see <http://www.gnu.org/licenses/>.
 
-import GithubObject
+import github.GithubObject
 
-import NamedUser
+import github.NamedUser
 
 
-class CommitComment(GithubObject.GithubObject):
+class CommitComment(github.GithubObject.GithubObject):
     @property
     def body(self):
         self._completeIfNotSet(self._body)
@@ -94,17 +96,17 @@ class CommitComment(GithubObject.GithubObject):
         self._useAttributes(data)
 
     def _initAttributes(self):
-        self._body = GithubObject.NotSet
-        self._commit_id = GithubObject.NotSet
-        self._created_at = GithubObject.NotSet
-        self._html_url = GithubObject.NotSet
-        self._id = GithubObject.NotSet
-        self._line = GithubObject.NotSet
-        self._path = GithubObject.NotSet
-        self._position = GithubObject.NotSet
-        self._updated_at = GithubObject.NotSet
-        self._url = GithubObject.NotSet
-        self._user = GithubObject.NotSet
+        self._body = github.GithubObject.NotSet
+        self._commit_id = github.GithubObject.NotSet
+        self._created_at = github.GithubObject.NotSet
+        self._html_url = github.GithubObject.NotSet
+        self._id = github.GithubObject.NotSet
+        self._line = github.GithubObject.NotSet
+        self._path = github.GithubObject.NotSet
+        self._position = github.GithubObject.NotSet
+        self._updated_at = github.GithubObject.NotSet
+        self._url = github.GithubObject.NotSet
+        self._user = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "body" in attributes:  # pragma no branch
@@ -120,16 +122,16 @@ class CommitComment(GithubObject.GithubObject):
             assert attributes["html_url"] is None or isinstance(attributes["html_url"], (str, unicode)), attributes["html_url"]
             self._html_url = attributes["html_url"]
         if "id" in attributes:  # pragma no branch
-            assert attributes["id"] is None or isinstance(attributes["id"], int), attributes["id"]
+            assert attributes["id"] is None or isinstance(attributes["id"], (int, long)), attributes["id"]
             self._id = attributes["id"]
         if "line" in attributes:  # pragma no branch
-            assert attributes["line"] is None or isinstance(attributes["line"], int), attributes["line"]
+            assert attributes["line"] is None or isinstance(attributes["line"], (int, long)), attributes["line"]
             self._line = attributes["line"]
         if "path" in attributes:  # pragma no branch
             assert attributes["path"] is None or isinstance(attributes["path"], (str, unicode)), attributes["path"]
             self._path = attributes["path"]
         if "position" in attributes:  # pragma no branch
-            assert attributes["position"] is None or isinstance(attributes["position"], int), attributes["position"]
+            assert attributes["position"] is None or isinstance(attributes["position"], (int, long)), attributes["position"]
             self._position = attributes["position"]
         if "updated_at" in attributes:  # pragma no branch
             assert attributes["updated_at"] is None or isinstance(attributes["updated_at"], (str, unicode)), attributes["updated_at"]
@@ -139,4 +141,4 @@ class CommitComment(GithubObject.GithubObject):
             self._url = attributes["url"]
         if "user" in attributes:  # pragma no branch
             assert attributes["user"] is None or isinstance(attributes["user"], dict), attributes["user"]
-            self._user = None if attributes["user"] is None else NamedUser.NamedUser(self._requester, attributes["user"], completed=False)
+            self._user = None if attributes["user"] is None else github.NamedUser.NamedUser(self._requester, attributes["user"], completed=False)

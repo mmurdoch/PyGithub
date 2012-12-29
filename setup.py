@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
@@ -13,30 +14,18 @@
 
 # You should have received a copy of the GNU Lesser General Public License along with PyGithub.  If not, see <http://www.gnu.org/licenses/>.
 
-from distutils.core import setup, Command
+import setuptools
 import textwrap
 
-class test( Command ):
-    user_options = []
 
-    def initialize_options( self ):
-        pass
-
-    def finalize_options( self ):
-        pass
-
-    def run( self ):
-        import github.tests
-        github.tests.run()
-
-setup(
-    name = "PyGithub",
-    version = "1.8.1",
-    description = "Use the full Github API v3",
-    author = "Vincent Jacques",
-    author_email = "vincent@vincent-jacques.net",
-    url = "http://vincent-jacques.net/PyGithub",
-    long_description = textwrap.dedent( """\
+setuptools.setup(
+    name="PyGithub",
+    version="1.10.0",
+    description="Use the full Github API v3",
+    author="Vincent Jacques",
+    author_email="vincent@vincent-jacques.net",
+    url="http://vincent-jacques.net/PyGithub",
+    long_description=textwrap.dedent("""\
         Tutorial
         ========
 
@@ -63,22 +52,24 @@ setup(
         Reference documentation
         =======================
 
-        See http://vincent-jacques.net/PyGithub""" ),
-    packages = [
+        See http://vincent-jacques.net/PyGithub"""),
+    packages=[
         "github",
         "github.tests",
     ],
-    package_data = {
-        "github": [ "ReadMe.md", "COPYING*", "doc/*.md", "tests/ReplayData/*.txt" ]
+    package_data={
+        "github": ["ReadMe.md", "COPYING*", "doc/*.md", "tests/ReplayData/*.txt"]
     },
-    classifiers = [
+    classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
         "Topic :: Software Development",
     ],
-    cmdclass = { "test": test },
+    test_suite="github.tests.AllTests",
+    use_2to3=True
 )

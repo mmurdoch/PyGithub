@@ -1,4 +1,4 @@
-This is a Python library to access the [Github API v3](http://developer.github.com/v3).
+This is a Python (2 and 3) library to access the [Github API v3](http://developer.github.com/v3).
 
 With it, you can manage your [Github](http://github.com) resources (repositories, user profiles, organizations, etc.) from Python scripts.
 
@@ -11,12 +11,16 @@ PyGithub is stable. I will maintain it up to date with the API, and fix bugs if 
 What's new?
 ===========
 
-[![Build Status](https://secure.travis-ci.org/jacquev6/PyGithub.png)](http://travis-ci.org/jacquev6/PyGithub)
+[![Build Status](https://travis-ci.org/jacquev6/PyGithub.png?branch=master)](https://travis-ci.org/jacquev6/PyGithub)
 
-[Version 1.8.1](https://github.com/jacquev6/PyGithub/issues?milestone=15&state=closed) (October 28th, 2012)
------------------------------------------------------------------------------------------------------------
+[Version 1.10.0](https://github.com/jacquev6/PyGithub/issues?milestone=16&state=closed) (December 25th, 2012) (Christmas 2012 edition)
+--------------------------------------------------------------------------------------------------------------------------------------
 
-* Repository.get_git_ref prepends "refs/" to the requested references. Thank you [simon-weber](https://github.com/simon-weber) for noting the incoherence between documentation and behavior. If you feel like it's a breaking change, please see [this issue](https://github.com/jacquev6/PyGithub/issues/104)
+* Major improvement: support Python 3! PyGithub is automaticaly tested on [Travis](http://travis-ci.org/jacquev6/PyGithub) with versions 2.5, 2.6, 2.7, 3.1 and 3.2 of Python
+* Add a shortcut function `Github.get_repo` to get a repo directly from its full name. thank you [lwc](https://github.com/lwc) for the contribution
+* `Github.get_gitignore_templates` and `Github.get_gitignore_template` for APIs `/gitignore/templates`
+* Add the optional `ref` parameter to `Repository.get_contents` and `get_readme`. Thank you [fixxxeruk](https://github.com/fixxxeruk) for the contribution
+* Get comments for all issues and all pull requests on a repository (`GET /repos/:user/:repo/pulls/comments`: `Repository.get_pulls_comments` or `Repository.get_pulls_review_comments`; `GET /repos/:user/:repo/issues/comments`: `Repository.get_issues_comments`)
 
 Previous versions
 -----------------
@@ -32,7 +36,7 @@ You can also clone it on [Github](http://github.com/jacquev6/PyGithub).
 Tutorial
 ========
 
-First create a Gihtub instance:
+First create a Github instance:
 
     from github import Github
 

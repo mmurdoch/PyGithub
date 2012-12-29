@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -11,10 +13,10 @@
 
 # You should have received a copy of the GNU Lesser General Public License along with PyGithub.  If not, see <http://www.gnu.org/licenses/>.
 
-import GithubObject
+import github.GithubObject
 
 
-class File(GithubObject.BasicGithubObject):
+class File(github.GithubObject.BasicGithubObject):
     @property
     def additions(self):
         return self._NoneIfNotSet(self._additions)
@@ -52,28 +54,28 @@ class File(GithubObject.BasicGithubObject):
         return self._NoneIfNotSet(self._status)
 
     def _initAttributes(self):
-        self._additions = GithubObject.NotSet
-        self._blob_url = GithubObject.NotSet
-        self._changes = GithubObject.NotSet
-        self._deletions = GithubObject.NotSet
-        self._filename = GithubObject.NotSet
-        self._patch = GithubObject.NotSet
-        self._raw_url = GithubObject.NotSet
-        self._sha = GithubObject.NotSet
-        self._status = GithubObject.NotSet
+        self._additions = github.GithubObject.NotSet
+        self._blob_url = github.GithubObject.NotSet
+        self._changes = github.GithubObject.NotSet
+        self._deletions = github.GithubObject.NotSet
+        self._filename = github.GithubObject.NotSet
+        self._patch = github.GithubObject.NotSet
+        self._raw_url = github.GithubObject.NotSet
+        self._sha = github.GithubObject.NotSet
+        self._status = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "additions" in attributes:  # pragma no branch
-            assert attributes["additions"] is None or isinstance(attributes["additions"], int), attributes["additions"]
+            assert attributes["additions"] is None or isinstance(attributes["additions"], (int, long)), attributes["additions"]
             self._additions = attributes["additions"]
         if "blob_url" in attributes:  # pragma no branch
             assert attributes["blob_url"] is None or isinstance(attributes["blob_url"], (str, unicode)), attributes["blob_url"]
             self._blob_url = attributes["blob_url"]
         if "changes" in attributes:  # pragma no branch
-            assert attributes["changes"] is None or isinstance(attributes["changes"], int), attributes["changes"]
+            assert attributes["changes"] is None or isinstance(attributes["changes"], (int, long)), attributes["changes"]
             self._changes = attributes["changes"]
         if "deletions" in attributes:  # pragma no branch
-            assert attributes["deletions"] is None or isinstance(attributes["deletions"], int), attributes["deletions"]
+            assert attributes["deletions"] is None or isinstance(attributes["deletions"], (int, long)), attributes["deletions"]
             self._deletions = attributes["deletions"]
         if "filename" in attributes:  # pragma no branch
             assert attributes["filename"] is None or isinstance(attributes["filename"], (str, unicode)), attributes["filename"]

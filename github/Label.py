@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2012 Vincent Jacques
 # vincent@vincent-jacques.net
 
@@ -13,10 +15,10 @@
 
 import urllib
 
-import GithubObject
+import github.GithubObject
 
 
-class Label(GithubObject.GithubObject):
+class Label(github.GithubObject.GithubObject):
     @property
     def color(self):
         self._completeIfNotSet(self._color)
@@ -60,9 +62,9 @@ class Label(GithubObject.GithubObject):
         return urllib.quote(self.name)
 
     def _initAttributes(self):
-        self._color = GithubObject.NotSet
-        self._name = GithubObject.NotSet
-        self._url = GithubObject.NotSet
+        self._color = github.GithubObject.NotSet
+        self._name = github.GithubObject.NotSet
+        self._url = github.GithubObject.NotSet
 
     def _useAttributes(self, attributes):
         if "color" in attributes:  # pragma no branch

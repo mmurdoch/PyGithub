@@ -10,7 +10,11 @@ Constructed from user's login and password or OAuth token or nothing:
     g = Github( token )
     g = Github()
 
+You can also use your client_id and client_secret:
+    g = github.Github(client_id="YourClientId", client_secret="YourClientSecret")
+
 You can add an argument `base_url = "http://my.enterprise.com:8080/path/to/github"` to connect to a local install of Github (ie. Github Enterprise).
+You can add an argument `user_agent` to send a custom User-Agent header to Github.
 Another argument, that can be passed is `timeout` which has default value `10`.
 
 Attributes
@@ -22,6 +26,7 @@ Methods
 * `get_user()`: `AuthenticatedUser`
 * `get_user( login )`: `NamedUser`
 * `get_organization( login )`: `Organization`
+* `get_repo( full_name )`: `Repository`
 * `get_gist( id )`: `Gist`
     * `id`: string
 * `get_gists()`: `PaginatedList` of `Gist`
@@ -36,6 +41,8 @@ Methods
 * `render_markdown( text, [context] )`: string
     * `text`: string
     * `context`: `Repository`
+* `get_gitignore_templates()`: list of string
+* `get_gitignore_template( name )`: `GitignoreTemplate`
 
 Class `PaginatedList`
 =====================
@@ -94,6 +101,8 @@ Authorizations
     * `scopes`: list of string
     * `note`: string
     * `note_url`: string
+    * `client_id`: string
+    * `client_secret`: string
 * `get_authorization( id )`: `Authorization`
     * `id`: integer
 * `get_authorizations()`: `PaginatedList` of `Authorization`
@@ -170,7 +179,7 @@ Orgs
 
 Repos
 -----
-* `create_repo( name, [description, homepage, private, has_issues, has_wiki, has_downloads] )`: `Repository`
+* `create_repo( name, [description, homepage, private, has_issues, has_wiki, has_downloads, auto_init, gitignore_template] )`: `Repository`
     * `name`: string
     * `description`: string
     * `homepage`: string
@@ -178,6 +187,8 @@ Repos
     * `has_issues`: bool
     * `has_wiki`: bool
     * `has_downloads`: bool
+    * `auto_init`: bool
+    * `gitignore_template`: string
 * `get_repo( name )`: `Repository`
     * `name`: string
 * `get_repos( [type, sort, direction] )`: `PaginatedList` of `Repository`
@@ -561,6 +572,14 @@ Attributes
 * `sha`: string
 * `type`: string
 * `url`: string
+
+Class `GitignoreTemplate`
+=========================
+
+Attributes
+----------
+* `name`: string
+* `source`: string
 
 Class `GitRef`
 ==============
@@ -965,7 +984,7 @@ Public_members
 
 Repos
 -----
-* `create_repo( name, [description, homepage, private, has_issues, has_wiki, has_downloads, team_id] )`: `Repository`
+* `create_repo( name, [description, homepage, private, has_issues, has_wiki, has_downloads, team_id, auto_init, gitignore_template] )`: `Repository`
     * `name`: string
     * `description`: string
     * `homepage`: string
@@ -974,6 +993,8 @@ Repos
     * `has_wiki`: bool
     * `has_downloads`: bool
     * `team_id`: `Team`
+    * `auto_init`: bool
+    * `gitignore_template`: string
 * `get_repo( name )`: `Repository`
     * `name`: string
 * `get_repos( [type] )`: `PaginatedList` of `Repository`
@@ -1014,6 +1035,7 @@ Class `PullRequest`
 Attributes
 ----------
 * `additions`: integer
+* `assignee`: `NamedUser`
 * `base`: `PullRequestPart`
 * `body`: string
 * `changed_files`: integer
@@ -1059,7 +1081,7 @@ Files
 -----
 * `get_files()`: `PaginatedList` of `File`
 
-Issue_comments
+Issue comments
 --------------
 * `create_issue_comment( body )`: `IssueComment`
     * `body`: string
@@ -1195,6 +1217,14 @@ Comments
 * `get_comment( id )`: `CommitComment`
     * `id`: integer
 * `get_comments()`: `PaginatedList` of `CommitComment`
+* `get_issues_comments([sort, direction, since])`: `PaginatedList` of `IssueComment`
+    * `sort`: string
+    * `direction`: string
+    * `since`: datetime.datetime
+* `get_pulls_comments([sort, direction, since])` or `get_pulls_review_comments([sort, direction, since])`: `PaginatedList` of `PullRequestComment`
+    * `sort`: string
+    * `direction`: string
+    * `since`: datetime.datetime
 
 Commits
 -------
@@ -1206,9 +1236,11 @@ Commits
 
 Contents
 --------
-* `get_readme()`: `ContentFile`
-* `get_contents( path )`: `ContentFile`
+* `get_readme( [ref] )`: `ContentFile`
+    * `ref`: string
+* `get_contents( path, [ref] )`: `ContentFile`
     * `path`: string
+    * `ref`: string
 * `get_archive_link( archive_format, [ref] )`: string
     * `archive_format`: string
     * `ref`: string
@@ -1374,7 +1406,7 @@ Milestones
 
 Modification
 ------------
-* `edit( name, [description, homepage, public, has_issues, has_wiki, has_downloads] )`
+* `edit( name, [description, homepage, public, has_issues, has_wiki, has_downloads, default_branch] )`
     * `name`: string
     * `description`: string
     * `homepage`: string
@@ -1382,6 +1414,7 @@ Modification
     * `has_issues`: bool
     * `has_wiki`: bool
     * `has_downloads`: bool
+    * `default_branch`: string
 
 Pulls
 -----
