@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -19,39 +20,64 @@ import github.Issue
 import github.NamedUser
 
 
-class IssueEvent(github.GithubObject.GithubObject):
+class IssueEvent(github.GithubObject.CompletableGithubObject):
+    """
+    This class represents IssueEvents as returned for example by http://developer.github.com/v3/todo
+    """
+
     @property
     def actor(self):
+        """
+        :type: :class:`github.NamedUser.NamedUser`
+        """
         self._completeIfNotSet(self._actor)
         return self._NoneIfNotSet(self._actor)
 
     @property
     def commit_id(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._commit_id)
         return self._NoneIfNotSet(self._commit_id)
 
     @property
     def created_at(self):
+        """
+        :type: datetime.datetime
+        """
         self._completeIfNotSet(self._created_at)
         return self._NoneIfNotSet(self._created_at)
 
     @property
     def event(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._event)
         return self._NoneIfNotSet(self._event)
 
     @property
     def id(self):
+        """
+        :type: integer
+        """
         self._completeIfNotSet(self._id)
         return self._NoneIfNotSet(self._id)
 
     @property
     def issue(self):
+        """
+        :type: :class:`github.Issue.Issue`
+        """
         self._completeIfNotSet(self._issue)
         return self._NoneIfNotSet(self._issue)
 
     @property
     def url(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._url)
         return self._NoneIfNotSet(self._url)
 

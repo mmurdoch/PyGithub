@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -26,7 +27,7 @@ class UserKey(Framework.TestCase):
         self.assertEqual(self.key.key, "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA2Mm0RjTNAYFfSCtUpO54usdseroUSIYg5KX4JoseTpqyiB/hqewjYLAdUq/tNIQzrkoEJWSyZrQt0ma7/YCyMYuNGd3DU6q6ZAyBeY3E9RyCiKjO3aTL2VKQGFvBVVmGdxGVSCITRphAcsKc/PF35/fg9XP9S0anMXcEFtdfMHz41SSw+XtE+Vc+6cX9FuI5qUfLGbkv8L1v3g4uw9VXlzq4GfTA+1S7D6mcoGHopAIXFlVr+2RfDKdSURMcB22z41fljO1MW4+zUS/4FyUTpL991es5fcwKXYoiE+x06VJeJJ1Krwx+DZj45uweV6cHXt2JwJEI9fWB6WyBlDejWw==")
         self.assertEqual(self.key.title, "Key added through PyGithub")
         self.assertEqual(self.key.url, "https://api.github.com/user/keys/2626650")
-        self.assertEqual(self.key.verified, True)
+        self.assertTrue(self.key.verified)
 
     def testEditWithoutArguments(self):
         self.key.edit()

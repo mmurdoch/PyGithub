@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -44,8 +45,8 @@ class PullRequest(Framework.TestCase):
         self.assertEqual(self.pull.html_url, "https://github.com/jacquev6/PyGithub/pull/31")
         self.assertEqual(self.pull.id, 1436215)
         self.assertEqual(self.pull.issue_url, "https://github.com/jacquev6/PyGithub/issues/31")
-        self.assertEqual(self.pull.mergeable, False)
-        self.assertEqual(self.pull.merged, True)
+        self.assertFalse(self.pull.mergeable)
+        self.assertTrue(self.pull.merged)
         self.assertEqual(self.pull.merged_at, datetime.datetime(2012, 5, 27, 10, 29, 7))
         self.assertEqual(self.pull.merged_by.login, "jacquev6")
         self.assertEqual(self.pull.number, 31)
@@ -95,7 +96,7 @@ class PullRequest(Framework.TestCase):
         self.assertFalse(self.pull.is_merged())
         status = self.pull.merge()
         self.assertEqual(status.sha, "688208b1a5a074871d0e9376119556897439697d")
-        self.assertEqual(status.merged, True)
+        self.assertTrue(status.merged)
         self.assertEqual(status.message, "Pull Request successfully merged")
         self.assertTrue(self.pull.is_merged())
 

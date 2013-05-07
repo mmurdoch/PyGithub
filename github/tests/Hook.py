@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -24,7 +25,7 @@ class Hook(Framework.TestCase):
         self.hook = self.g.get_user().get_repo("PyGithub").get_hook(257993)
 
     def testAttributes(self):
-        self.assertEqual(self.hook.active, True)  # WTF
+        self.assertTrue(self.hook.active)  # WTF
         self.assertEqual(self.hook.config, {"url": "http://foobar.com"})
         self.assertEqual(self.hook.created_at, datetime.datetime(2012, 5, 19, 6, 1, 45))
         self.assertEqual(self.hook.events, ["push"])
@@ -55,4 +56,4 @@ class Hook(Framework.TestCase):
         self.hook.edit("web", {"url": "http://foobar.com"}, remove_events=["fork"])
         self.assertEqual(self.hook.events, ["push"])
         self.hook.edit("web", {"url": "http://foobar.com"}, active=True)
-        self.assertEqual(self.hook.active, True)
+        self.assertTrue(self.hook.active)

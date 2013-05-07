@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -16,60 +17,72 @@
 
 import setuptools
 import textwrap
+import subprocess
+import shutil
+import os.path
+
+version = "1.14.2"
 
 
-setuptools.setup(
-    name="PyGithub",
-    version="1.10.0",
-    description="Use the full Github API v3",
-    author="Vincent Jacques",
-    author_email="vincent@vincent-jacques.net",
-    url="http://vincent-jacques.net/PyGithub",
-    long_description=textwrap.dedent("""\
-        Tutorial
-        ========
+if __name__ == "__main__":
+    setuptools.setup(
+        name="PyGithub",
+        version=version,
+        description="Use the full Github API v3",
+        author="Vincent Jacques",
+        author_email="vincent@vincent-jacques.net",
+        url="http://jacquev6.github.com/PyGithub",
+        long_description=textwrap.dedent("""\
+            (Very short) Tutorial
+            =====================
 
-        First create a Gihub instance::
+            First create a Github instance::
 
-            from github import Github
+                from github import Github
 
-            g = Github( "user", "password" )
+                g = Github("user", "password")
 
-        Then play with your Github objects::
+            Then play with your Github objects::
 
-            for repo in g.get_user().get_repos():
-                print repo.name
-                repo.edit( has_wiki = False )
+                for repo in g.get_user().get_repos():
+                    print repo.name
+                    repo.edit(has_wiki=False)
 
-        You can also create a Github instance with an OAuth token::
+            You can also create a Github instance with an OAuth token::
 
-            g = Github( token )
+                g = Github(token)
 
-        Or without authentication::
+            Or without authentication::
 
-            g = Github()
+                g = Github()
 
-        Reference documentation
-        =======================
+            Reference documentation
+            =======================
 
-        See http://vincent-jacques.net/PyGithub"""),
-    packages=[
-        "github",
-        "github.tests",
-    ],
-    package_data={
-        "github": ["ReadMe.md", "COPYING*", "doc/*.md", "tests/ReplayData/*.txt"]
-    },
-    classifiers=[
-        "Development Status :: 5 - Production/Stable",
-        "Environment :: Web Environment",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Topic :: Software Development",
-    ],
-    test_suite="github.tests.AllTests",
-    use_2to3=True
-)
+            See http://jacquev6.github.com/PyGithub"""),
+        packages=[
+            "github",
+            "github.tests",
+        ],
+        package_data={
+            "github": ["ReadMe.rst", "COPYING*", "tests/ReplayData/*.txt"]
+        },
+        classifiers=[
+            "Development Status :: 5 - Production/Stable",
+            "Environment :: Web Environment",
+            "Intended Audience :: Developers",
+            "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
+            "Operating System :: OS Independent",
+            "Programming Language :: Python",
+            "Programming Language :: Python :: 2",
+            "Programming Language :: Python :: 2.5",
+            "Programming Language :: Python :: 2.6",
+            "Programming Language :: Python :: 2.7",
+            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 3.2",
+            "Programming Language :: Python :: 3.3",
+            "Topic :: Software Development",
+        ],
+        test_suite="github.tests.AllTests",
+        use_2to3=True
+    )

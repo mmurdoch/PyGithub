@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -37,7 +38,7 @@ class NamedUser(Framework.TestCase):
         self.assertEqual(self.user.followers, 296)
         self.assertEqual(self.user.following, 41)
         self.assertEqual(self.user.gravatar_id, "c5a7f21b46df698f3db31c37ed0cf55a")
-        self.assertEqual(self.user.hireable, False)
+        self.assertFalse(self.user.hireable)
         self.assertEqual(self.user.html_url, "https://github.com/nvie")
         self.assertEqual(self.user.id, 83844)
         self.assertEqual(self.user.location, "Netherlands")
@@ -64,7 +65,7 @@ class NamedUser(Framework.TestCase):
         self.assertEqual(self.user.followers, 13)
         self.assertEqual(self.user.following, 24)
         self.assertEqual(self.user.gravatar_id, "b68de5ae38616c296fa345d2b9df2225")
-        self.assertEqual(self.user.hireable, False)
+        self.assertFalse(self.user.hireable)
         self.assertEqual(self.user.html_url, "https://github.com/jacquev6")
         self.assertEqual(self.user.id, 327146)
         self.assertEqual(self.user.location, "Paris, France")
@@ -131,3 +132,6 @@ class NamedUser(Framework.TestCase):
 
     def testGetReceivedEvents(self):
         self.assertListKeyBegin(self.user.get_received_events(), lambda e: e.type, ["IssueCommentEvent", "IssueCommentEvent", "IssueCommentEvent", "IssueCommentEvent"])
+
+    def testGetKeys(self):
+        self.assertListKeyEqual(self.user.get_keys(), lambda k: k.id, [3557894, 3791954, 3937333, 4051357, 4051492])

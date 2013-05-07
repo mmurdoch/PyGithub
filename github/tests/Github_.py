@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -16,6 +17,8 @@
 import datetime
 
 import Framework
+
+import github
 
 
 class Github(Framework.TestCase):
@@ -31,15 +34,15 @@ class Github(Framework.TestCase):
         self.assertEqual(repos[1].created_at, datetime.datetime(2011, 6, 23, 22, 52, 33))
         self.assertEqual(repos[1].name, "github-v3-api")
         self.assertEqual(repos[1].watchers, 35)
-        self.assertEqual(repos[1].has_downloads, True)
+        self.assertTrue(repos[1].has_downloads)
         self.assertEqual(repos[3].homepage, "http://peter-murach.github.com/github")
         self.assertEqual(repos[1].url, "/repos/jwilger/github-v3-api")
-        self.assertEqual(repos[1].fork, False)
-        self.assertEqual(repos[1].has_issues, True)
-        self.assertEqual(repos[1].has_wiki, False)
+        self.assertFalse(repos[1].fork)
+        self.assertTrue(repos[1].has_issues)
+        self.assertFalse(repos[1].has_wiki)
         self.assertEqual(repos[1].forks, 13)
         self.assertEqual(repos[1].size, 212)
-        self.assertEqual(repos[1].private, False)
+        self.assertFalse(repos[1].private)
         self.assertEqual(repos[1].open_issues, 2)
         self.assertEqual(repos[3].pushed_at, datetime.datetime(2012, 6, 28, 21, 26, 31))
         self.assertEqual(repos[1].description, "Ruby Client for the GitHub v3 API")
@@ -107,3 +110,6 @@ class Github(Framework.TestCase):
         t = self.g.get_gitignore_template("C++")
         self.assertEqual(t.name, "C++")
         self.assertEqual(t.source, "# Compiled Object files\n*.slo\n*.lo\n*.o\n\n# Compiled Dynamic libraries\n*.so\n*.dylib\n\n# Compiled Static libraries\n*.lai\n*.la\n*.a\n")
+
+    def testStringOfNotSet(self):
+        self.assertEqual(str(github.GithubObject.NotSet), "NotSet")

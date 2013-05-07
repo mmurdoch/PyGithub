@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -16,41 +17,72 @@
 import github.GithubObject
 
 
-class File(github.GithubObject.BasicGithubObject):
+class File(github.GithubObject.NonCompletableGithubObject):
+    """
+    This class represents Files as returned for example by http://developer.github.com/v3/todo
+    """
+
     @property
     def additions(self):
+        """
+        :type: integer
+        """
         return self._NoneIfNotSet(self._additions)
 
     @property
     def blob_url(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._blob_url)
 
     @property
     def changes(self):
+        """
+        :type: integer
+        """
         return self._NoneIfNotSet(self._changes)
 
     @property
     def deletions(self):
+        """
+        :type: integer
+        """
         return self._NoneIfNotSet(self._deletions)
 
     @property
     def filename(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._filename)
 
     @property
     def patch(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._patch)
 
     @property
     def raw_url(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._raw_url)
 
     @property
     def sha(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._sha)
 
     @property
     def status(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._status)
 
     def _initAttributes(self):

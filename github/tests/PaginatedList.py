@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -19,7 +20,8 @@ import Framework
 class PaginatedList(Framework.TestCase):
     def setUp(self):
         Framework.TestCase.setUp(self)
-        self.list = self.g.get_user("openframeworks").get_repo("openFrameworks").get_issues()
+        self.repo = self.g.get_user("openframeworks").get_repo("openFrameworks")
+        self.list = self.repo.get_issues()
 
     def testIteration(self):
         self.assertEqual(len(list(self.list)), 333)
@@ -80,3 +82,13 @@ class PaginatedList(Framework.TestCase):
             l += 1
             if l == 75:
                 break
+
+    def testCustomPerPage(self):
+        self.assertEqual(self.g.per_page, 30)
+        self.g.per_page = 100
+        self.assertEqual(self.g.per_page, 100)
+        self.assertEqual(len(list(self.repo.get_issues())), 456)
+
+    def testCustomPerPageWithGetPage(self):
+        self.g.per_page = 100
+        self.assertEqual(len(self.repo.get_issues().get_page(2)), 100)

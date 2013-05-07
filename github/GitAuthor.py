@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -16,17 +17,30 @@
 import github.GithubObject
 
 
-class GitAuthor(github.GithubObject.BasicGithubObject):
+class GitAuthor(github.GithubObject.NonCompletableGithubObject):
+    """
+    This class represents GitAuthors as returned for example by http://developer.github.com/v3/todo
+    """
+
     @property
     def date(self):
+        """
+        :type: datetime.datetime
+        """
         return self._NoneIfNotSet(self._date)
 
     @property
     def email(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._email)
 
     @property
     def name(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._name)
 
     def _initAttributes(self):

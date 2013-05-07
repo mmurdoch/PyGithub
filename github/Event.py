@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -20,37 +21,65 @@ import github.Repository
 import github.NamedUser
 
 
-class Event(github.GithubObject.BasicGithubObject):
+class Event(github.GithubObject.NonCompletableGithubObject):
+    """
+    This class represents Events as returned for example by http://developer.github.com/v3/todo
+    """
+
     @property
     def actor(self):
+        """
+        :type: :class:`github.NamedUser.NamedUser`
+        """
         return self._NoneIfNotSet(self._actor)
 
     @property
     def created_at(self):
+        """
+        :type: datetime.datetime
+        """
         return self._NoneIfNotSet(self._created_at)
 
     @property
     def id(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._id)
 
     @property
     def org(self):
+        """
+        :type: :class:`github.Organization.Organization`
+        """
         return self._NoneIfNotSet(self._org)
 
     @property
     def payload(self):
+        """
+        :type: dict
+        """
         return self._NoneIfNotSet(self._payload)
 
     @property
     def public(self):
+        """
+        :type: bool
+        """
         return self._NoneIfNotSet(self._public)
 
     @property
     def repo(self):
+        """
+        :type: :class:`github.Repository.Repository`
+        """
         return self._NoneIfNotSet(self._repo)
 
     @property
     def type(self):
+        """
+        :type: string
+        """
         return self._NoneIfNotSet(self._type)
 
     def _initAttributes(self):

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -44,10 +45,6 @@ class Exceptions(Framework.TestCase):  # To stay compatible with Python 2.6, we 
                     "message": "Validation Failed"
                 }
             )
-            if atLeastPython26 and atMostPython2:
-                self.assertEqual(str(exception), "422 {u\'message\': u\'Validation Failed\', u\'errors\': [{u\'field\': u\'key\', u\'message\': u\"key is invalid. It must begin with \'ssh-rsa\' or \'ssh-dss\'. Check that you\'re copying the public half of the key\", u\'code\': u\'custom\', u\'resource\': u\'PublicKey\'}]}")
-            else:
-                self.assertEqual(str(exception), "422 {\'message\': \'Validation Failed\', \'errors\': [{\'field\': \'key\', \'message\': \"key is invalid. It must begin with \'ssh-rsa\' or \'ssh-dss\'. Check that you\'re copying the public half of the key\", \'code\': \'custom\', \'resource\': \'PublicKey\'}]}")  # pragma no cover
         self.assertTrue(raised)
 
     def testUnknownObject(self):
@@ -61,7 +58,7 @@ class Exceptions(Framework.TestCase):  # To stay compatible with Python 2.6, we 
             if atLeastPython26 and atMostPython2:
                 self.assertEqual(str(exception), "404 {u'message': u'Not Found'}")
             else:
-                self.assertEqual(str(exception), "404 {'message': 'Not Found'}")  # pragma no cover
+                self.assertEqual(str(exception), "404 {'message': 'Not Found'}")  # pragma no cover (Covered with Python 3)
         self.assertTrue(raised)
 
     def testUnknownUser(self):
@@ -75,7 +72,7 @@ class Exceptions(Framework.TestCase):  # To stay compatible with Python 2.6, we 
             if atLeastPython26 and atMostPython2:
                 self.assertEqual(str(exception), "404 {u'message': u'Not Found'}")
             else:
-                self.assertEqual(str(exception), "404 {'message': 'Not Found'}")  # pragma no cover
+                self.assertEqual(str(exception), "404 {'message': 'Not Found'}")  # pragma no cover (Covered with Python 3)
         self.assertTrue(raised)
 
     def testBadAuthentication(self):
@@ -89,5 +86,13 @@ class Exceptions(Framework.TestCase):  # To stay compatible with Python 2.6, we 
             if atLeastPython26 and atMostPython2:
                 self.assertEqual(str(exception), "401 {u'message': u'Bad credentials'}")
             else:
-                self.assertEqual(str(exception), "401 {'message': 'Bad credentials'}")  # pragma no cover
+                self.assertEqual(str(exception), "401 {'message': 'Bad credentials'}")  # pragma no cover (Covered with Python 3)
         self.assertTrue(raised)
+
+
+class SpecificExceptions(Framework.TestCase):
+    def testBadCredentials(self):
+        self.assertRaises(github.BadCredentialsException, lambda: github.Github("BadUser", "BadPassword").get_user().login)
+
+    def testUnknownObject(self):
+        self.assertRaises(github.UnknownObjectException, lambda: self.g.get_user().get_repo("Xxx"))

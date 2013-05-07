@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -22,64 +23,105 @@ import github.NamedUser
 import github.Label
 
 
-class Milestone(github.GithubObject.GithubObject):
+class Milestone(github.GithubObject.CompletableGithubObject):
+    """
+    This class represents Milestones as returned for example by http://developer.github.com/v3/todo
+    """
+
     @property
     def closed_issues(self):
+        """
+        :type: integer
+        """
         self._completeIfNotSet(self._closed_issues)
         return self._NoneIfNotSet(self._closed_issues)
 
     @property
     def created_at(self):
+        """
+        :type: datetime.datetime
+        """
         self._completeIfNotSet(self._created_at)
         return self._NoneIfNotSet(self._created_at)
 
     @property
     def creator(self):
+        """
+        :type: :class:`github.NamedUser.NamedUser`
+        """
         self._completeIfNotSet(self._creator)
         return self._NoneIfNotSet(self._creator)
 
     @property
     def description(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._description)
         return self._NoneIfNotSet(self._description)
 
     @property
     def due_on(self):
+        """
+        :type: datetime.datetime
+        """
         self._completeIfNotSet(self._due_on)
         return self._NoneIfNotSet(self._due_on)
 
     @property
     def id(self):
+        """
+        :type: integer
+        """
         self._completeIfNotSet(self._id)
         return self._NoneIfNotSet(self._id)
 
     @property
     def number(self):
+        """
+        :type: integer
+        """
         self._completeIfNotSet(self._number)
         return self._NoneIfNotSet(self._number)
 
     @property
     def open_issues(self):
+        """
+        :type: integer
+        """
         self._completeIfNotSet(self._open_issues)
         return self._NoneIfNotSet(self._open_issues)
 
     @property
     def state(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._state)
         return self._NoneIfNotSet(self._state)
 
     @property
     def title(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._title)
         return self._NoneIfNotSet(self._title)
 
     @property
     def url(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._url)
         return self._NoneIfNotSet(self._url)
 
     def delete(self):
-        headers, data = self._requester.requestAndCheck(
+        """
+        :calls: `DELETE /repos/:user/:repo/milestones/:number <http://developer.github.com/v3/todo>`_
+        :rtype: None
+        """
+        headers, data = self._requester.requestJsonAndCheck(
             "DELETE",
             self.url,
             None,
@@ -87,6 +129,14 @@ class Milestone(github.GithubObject.GithubObject):
         )
 
     def edit(self, title, state=github.GithubObject.NotSet, description=github.GithubObject.NotSet, due_on=github.GithubObject.NotSet):
+        """
+        :calls: `PATCH /repos/:user/:repo/milestones/:number <http://developer.github.com/v3/todo>`_
+        :param title: string
+        :param state: string
+        :param description: string
+        :param due_on: date
+        :rtype: None
+        """
         assert isinstance(title, (str, unicode)), title
         assert state is github.GithubObject.NotSet or isinstance(state, (str, unicode)), state
         assert description is github.GithubObject.NotSet or isinstance(description, (str, unicode)), description
@@ -100,7 +150,7 @@ class Milestone(github.GithubObject.GithubObject):
             post_parameters["description"] = description
         if due_on is not github.GithubObject.NotSet:
             post_parameters["due_on"] = due_on.strftime("%Y-%m-%d")
-        headers, data = self._requester.requestAndCheck(
+        headers, data = self._requester.requestJsonAndCheck(
             "PATCH",
             self.url,
             None,
@@ -109,6 +159,10 @@ class Milestone(github.GithubObject.GithubObject):
         self._useAttributes(data)
 
     def get_labels(self):
+        """
+        :calls: `GET /repos/:user/:repo/milestones/:number/labels <http://developer.github.com/v3/todo>`_
+        :rtype: :class:`github.PaginatedList.PaginatedList` of :class:`github.Label.Label`
+        """
         return github.PaginatedList.PaginatedList(
             github.Label.Label,
             self._requester,

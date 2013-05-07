@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Bill Mill bill.mill@gmail.com
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -69,20 +71,41 @@ class PaginatedListBase:
 
 
 class PaginatedList(PaginatedListBase):
+    """
+    This class abstracts the `pagination of the API <http://developer.github.com/v3/#pagination>`_.
+
+    You can simply enumerate through instances of this class::
+
+        for repo in user.get_repos():
+            print repo.name
+
+    You can also index them or take slices::
+
+        second_repo = user.get_repos()[1]
+        first_repos = user.get_repos()[:10]
+
+    And if you really need it, you can explicitely access a specific page::
+
+        some_repos = user.get_repos().get_page(0)
+        some_other_repos = user.get_repos().get_page(3)
+    """
+
     def __init__(self, contentClass, requester, firstUrl, firstParams):
         PaginatedListBase.__init__(self)
         self.__requester = requester
         self.__contentClass = contentClass
         self.__firstUrl = firstUrl
-        self.__firstParams = firstParams
+        self.__firstParams = firstParams or ()
         self.__nextUrl = firstUrl
         self.__nextParams = firstParams
+        if self.__requester.per_page != 30:
+            self.__nextParams["per_page"] = self.__requester.per_page
 
     def _couldGrow(self):
         return self.__nextUrl is not None
 
     def _fetchNextPage(self):
-        headers, data = self.__requester.requestAndCheck("GET", self.__nextUrl, self.__nextParams, None)
+        headers, data = self.__requester.requestJsonAndCheck("GET", self.__nextUrl, self.__nextParams, None)
 
         links = self.__parseLinkHeader(headers)
         if len(data) > 0 and "next" in links:
@@ -111,7 +134,9 @@ class PaginatedList(PaginatedListBase):
         params = dict(self.__firstParams)
         if page != 0:
             params["page"] = page + 1
-        headers, data = self.__requester.requestAndCheck("GET", self.__firstUrl, params, None)
+        if self.__requester.per_page != 30:
+            params["per_page"] = self.__requester.per_page
+        headers, data = self.__requester.requestJsonAndCheck("GET", self.__firstUrl, params, None)
 
         return [
             self.__contentClass(self.__requester, element, completed=False)

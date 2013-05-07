@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -18,54 +19,89 @@ import github.GithubObject
 import github.AuthorizationApplication
 
 
-class Authorization(github.GithubObject.GithubObject):
+class Authorization(github.GithubObject.CompletableGithubObject):
+    """
+    This class represents Authorizations as returned for example by http://developer.github.com/v3/todo
+    """
+
     @property
     def app(self):
+        """
+        :type: :class:`github.AuthorizationApplication.AuthorizationApplication`
+        """
         self._completeIfNotSet(self._app)
         return self._NoneIfNotSet(self._app)
 
     @property
     def created_at(self):
+        """
+        :type: datetime.datetime
+        """
         self._completeIfNotSet(self._created_at)
         return self._NoneIfNotSet(self._created_at)
 
     @property
     def id(self):
+        """
+        :type: integer
+        """
         self._completeIfNotSet(self._id)
         return self._NoneIfNotSet(self._id)
 
     @property
     def note(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._note)
         return self._NoneIfNotSet(self._note)
 
     @property
     def note_url(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._note_url)
         return self._NoneIfNotSet(self._note_url)
 
     @property
     def scopes(self):
+        """
+        :type: list of string
+        """
         self._completeIfNotSet(self._scopes)
         return self._NoneIfNotSet(self._scopes)
 
     @property
     def token(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._token)
         return self._NoneIfNotSet(self._token)
 
     @property
     def updated_at(self):
+        """
+        :type: datetime.datetime
+        """
         self._completeIfNotSet(self._updated_at)
         return self._NoneIfNotSet(self._updated_at)
 
     @property
     def url(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._url)
         return self._NoneIfNotSet(self._url)
 
     def delete(self):
-        headers, data = self._requester.requestAndCheck(
+        """
+        :calls: `DELETE /authorizations/:id <http://developer.github.com/v3/todo>`_
+        :rtype: None
+        """
+        headers, data = self._requester.requestJsonAndCheck(
             "DELETE",
             self.url,
             None,
@@ -73,6 +109,15 @@ class Authorization(github.GithubObject.GithubObject):
         )
 
     def edit(self, scopes=github.GithubObject.NotSet, add_scopes=github.GithubObject.NotSet, remove_scopes=github.GithubObject.NotSet, note=github.GithubObject.NotSet, note_url=github.GithubObject.NotSet):
+        """
+        :calls: `PATCH /authorizations/:id <http://developer.github.com/v3/todo>`_
+        :param scopes: list of string
+        :param add_scopes: list of string
+        :param remove_scopes: list of string
+        :param note: string
+        :param note_url: string
+        :rtype: None
+        """
         assert scopes is github.GithubObject.NotSet or all(isinstance(element, (str, unicode)) for element in scopes), scopes
         assert add_scopes is github.GithubObject.NotSet or all(isinstance(element, (str, unicode)) for element in add_scopes), add_scopes
         assert remove_scopes is github.GithubObject.NotSet or all(isinstance(element, (str, unicode)) for element in remove_scopes), remove_scopes
@@ -89,7 +134,7 @@ class Authorization(github.GithubObject.GithubObject):
             post_parameters["note"] = note
         if note_url is not github.GithubObject.NotSet:
             post_parameters["note_url"] = note_url
-        headers, data = self._requester.requestAndCheck(
+        headers, data = self._requester.requestJsonAndCheck(
             "PATCH",
             self.url,
             None,

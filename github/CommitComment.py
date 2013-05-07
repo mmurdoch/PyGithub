@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2012 Vincent Jacques
-# vincent@vincent-jacques.net
+# Copyright 2012 Vincent Jacques vincent@vincent-jacques.net
+# Copyright 2012 Zearin zearin@gonk.net
+# Copyright 2013 Vincent Jacques vincent@vincent-jacques.net
 
-# This file is part of PyGithub. http://vincent-jacques.net/PyGithub
+# This file is part of PyGithub. http://jacquev6.github.com/PyGithub/
 
 # PyGithub is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License
 # as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -18,64 +19,105 @@ import github.GithubObject
 import github.NamedUser
 
 
-class CommitComment(github.GithubObject.GithubObject):
+class CommitComment(github.GithubObject.CompletableGithubObject):
+    """
+    This class represents CommitComments as returned for example by http://developer.github.com/v3/todo
+    """
+
     @property
     def body(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._body)
         return self._NoneIfNotSet(self._body)
 
     @property
     def commit_id(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._commit_id)
         return self._NoneIfNotSet(self._commit_id)
 
     @property
     def created_at(self):
+        """
+        :type: datetime.datetime
+        """
         self._completeIfNotSet(self._created_at)
         return self._NoneIfNotSet(self._created_at)
 
     @property
     def html_url(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._html_url)
         return self._NoneIfNotSet(self._html_url)
 
     @property
     def id(self):
+        """
+        :type: integer
+        """
         self._completeIfNotSet(self._id)
         return self._NoneIfNotSet(self._id)
 
     @property
     def line(self):
+        """
+        :type: integer
+        """
         self._completeIfNotSet(self._line)
         return self._NoneIfNotSet(self._line)
 
     @property
     def path(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._path)
         return self._NoneIfNotSet(self._path)
 
     @property
     def position(self):
+        """
+        :type: integer
+        """
         self._completeIfNotSet(self._position)
         return self._NoneIfNotSet(self._position)
 
     @property
     def updated_at(self):
+        """
+        :type: datetime.datetime
+        """
         self._completeIfNotSet(self._updated_at)
         return self._NoneIfNotSet(self._updated_at)
 
     @property
     def url(self):
+        """
+        :type: string
+        """
         self._completeIfNotSet(self._url)
         return self._NoneIfNotSet(self._url)
 
     @property
     def user(self):
+        """
+        :type: :class:`github.NamedUser.NamedUser`
+        """
         self._completeIfNotSet(self._user)
         return self._NoneIfNotSet(self._user)
 
     def delete(self):
-        headers, data = self._requester.requestAndCheck(
+        """
+        :calls: `DELETE /repos/:user/:repo/comments/:id <http://developer.github.com/v3/todo>`_
+        :rtype: None
+        """
+        headers, data = self._requester.requestJsonAndCheck(
             "DELETE",
             self.url,
             None,
@@ -83,11 +125,16 @@ class CommitComment(github.GithubObject.GithubObject):
         )
 
     def edit(self, body):
+        """
+        :calls: `PATCH /repos/:user/:repo/comments/:id <http://developer.github.com/v3/todo>`_
+        :param body: string
+        :rtype: None
+        """
         assert isinstance(body, (str, unicode)), body
         post_parameters = {
             "body": body,
         }
-        headers, data = self._requester.requestAndCheck(
+        headers, data = self._requester.requestJsonAndCheck(
             "PATCH",
             self.url,
             None,
